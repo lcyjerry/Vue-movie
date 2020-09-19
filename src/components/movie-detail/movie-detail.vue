@@ -9,7 +9,7 @@
           <h1 class="title">{{this.data.chinese_title}}</h1>
           <div class="bg-image" :style="bgImage"></div>
           <div class="favorite">
-            <i @click="toggleFavorite(data)" class="icon" :class="getIcon"></i>
+            <i ref="icon" @click="toggleFavorite(data)" class="icon" :class="getIcon"></i>
           </div>
         </div>
       </transition>
@@ -108,7 +108,7 @@ export default {
   .fade-enter-active, .fade-leave-active
     transition: all 0.5s
   .fade-enter, .fade-leave-to
-    opacity 0
+    opacity: 0
   .back
     position: absolute
     z-index: 50

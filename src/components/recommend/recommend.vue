@@ -1,20 +1,26 @@
 <template>
   <div class="recommend">
     <scroll class="recommend-content">
-      <div class="recommend-list">
-        <h1 class="list-title">近期热门电影</h1>
-        <ul>
-          <li class="item" @click="selectMovie(item)" v-for="item in results" :key="item.id">
-            <div class="icon">
-              <img width="120" height="150" :src="item.cover" />
+      <div>
+        <transition name="fade">
+          <div v-show="results.length">
+            <div class="recommend-list">
+              <h1 class="list-title">近期热门电影</h1>
+              <ul>
+                <li class="item" @click="selectMovie(item)" v-for="item in results" :key="item.id">
+                  <div class="icon">
+                    <img width="120" height="150" :src="item.cover" />
+                  </div>
+                  <div class="text">
+                    <h2 class="name">{{item.title}}</h2>
+                    <p class="id">豆瓣ID：{{item.id}}</p>
+                    <p class="rate">{{item.rate}}</p>
+                  </div>
+                </li>
+              </ul>
             </div>
-            <div class="text">
-              <h2 class="name">{{item.title}}</h2>
-              <p class="id">豆瓣ID：{{item.id}}</p>
-              <p class="rate">{{item.rate}}</p>
-            </div>
-          </li>
-        </ul>
+          </div>
+        </transition>
       </div>
       <div v-show="!results.length" class="loading-container">
         <loading></loading>
@@ -71,6 +77,10 @@ export default {
   .recommend-content
     height: 100%
     overflow: hidden
+    .fade-enter-active, .fade-leave-active
+      transition: all 0.5s
+    .fade-enter, .fade-leave-to
+      opacity: 0
     .recommend-list
       .list-title
         height: 65px
