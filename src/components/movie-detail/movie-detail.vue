@@ -1,14 +1,18 @@
 <template>
   <transition appear name="slide">
     <div class="movie-detail">
-      <div class="back" @click="back">
-        <i class="icon-back"></i>
-      </div>
-      <h1 class="title">{{this.data.chinese_title}}</h1>
-      <div class="bg-image" :style="bgImage"></div>
-      <div v-show="data.sid" class="favorite">
-        <i @click="toggleFavorite(data)" class="icon" :class="getIcon"></i>
-      </div>
+      <transition name="fade">
+        <div v-show="data.sid">
+          <div class="back" @click="back">
+            <i class="icon-back"></i>
+          </div>
+          <h1 class="title">{{this.data.chinese_title}}</h1>
+          <div class="bg-image" :style="bgImage"></div>
+          <div class="favorite">
+            <i @click="toggleFavorite(data)" class="icon" :class="getIcon"></i>
+          </div>
+        </div>
+      </transition>
       <div v-show="!data.sid" class="loading-container">
         <loading></loading>
       </div>
@@ -101,6 +105,10 @@ export default {
   bottom: 0
   right: 0
   background: $color-background
+  .fade-enter-active, .fade-leave-active
+    transition: all 0.5s
+  .fade-enter, .fade-leave-to
+    opacity 0
   .back
     position: absolute
     z-index: 50
