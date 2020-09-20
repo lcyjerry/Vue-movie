@@ -8,7 +8,7 @@
       </div>
     </div>
     <transition name="fade">
-      <movie-list @selectMovie="MovieDetail" :results="results" v-show="results.length"></movie-list>
+      <movie-list @selectMovie="MovieDetail" :results="results" v-show="show"></movie-list>
     </transition>
     <router-view></router-view>
   </div>
@@ -24,6 +24,7 @@ export default {
     return {
       query: "",
       results: [],
+      show: false,
     };
   },
 
@@ -38,7 +39,7 @@ export default {
         if (newQuery !== "") {
           this.search(newQuery);
         } else {
-          this.results = [];
+          this.show = false;
         }
       }, 800)
     );
@@ -59,6 +60,7 @@ export default {
         })
         .then((res) => {
           this.results = res.data;
+          this.show = true;
         });
     },
 
