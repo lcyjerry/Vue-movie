@@ -24,6 +24,12 @@ const routes = [
   {
     path: "/search",
     component: Search,
+    children: [
+      {
+        path: ":id",
+        component: MovieDetail,
+      },
+    ],
   },
 ];
 

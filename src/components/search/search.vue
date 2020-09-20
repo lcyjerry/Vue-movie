@@ -1,11 +1,16 @@
 <template>
   <div class="search">
     <div class="search-wrapper">
-      <i class="icon-search"></i>
-      <input class="search-box" v-model="query" />
-      <i v-show="query" @click="clear" class="icon-dismiss"></i>
+      <div class="search-box">
+        <i class="icon-search"></i>
+        <input class="box" v-model="query" />
+        <i v-show="query" @click="clear" class="icon-dismiss"></i>
+      </div>
     </div>
-    <movie-list :results="results"></movie-list>
+    <transition name="fade">
+      <movie-list @selectMovie="MovieDetail" :results="results" v-show="results.length"></movie-list>
+    </transition>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -30,7 +35,11 @@ export default {
     this.$watch(
       "query",
       debounce((newQuery) => {
-        this.search(newQuery);
+        if (newQuery !== "") {
+          this.search(newQuery);
+        } else {
+          this.results = [];
+        }
       }, 800)
     );
   },
@@ -49,9 +58,14 @@ export default {
           params: data,
         })
         .then((res) => {
-          console.log(res);
           this.results = res.data;
         });
+    },
+
+    MovieDetail(id) {
+      this.$router.push({
+        path: `/search/${id}`,
+      });
     },
   },
 };
@@ -61,25 +75,34 @@ export default {
 @import '~common/stylus/variable'
 .search
   .search-wrapper
-    display: flex
-    align-items: center
     margin: 20px
-    height: 40px
-    padding: 0 14px
-    line-height: 40px
-    background-color: $color-highlight-background
-    border-radius: 6px
-    .icon-search
-      font-size: 24px
-      color: #222
     .search-box
-      flex: 1
-      height: 30px
-      line-height: 30px
-      background-color: #333
-      font-size: $font-size-medium
-      outline: 0
-    .icon-dismiss
-      font-size: 20px
-      color: #222
+      display: flex
+      align-items: center
+      box-sizing: border-box
+      width: 100%
+      padding: 0 6px
+      height: 40px
+      background: $color-highlight-background
+      border-radius: 6px
+      .icon-search
+        font-size: 24px
+        color: $color-background
+      .box
+        flex: 1
+        margin: 0 5px
+        line-height: 18px
+        background: $color-highlight-background
+        color: $color-text
+        font-size: $font-size-medium
+        outline: 0
+        &::placeholder
+          color: $color-text-d
+      .icon-dismiss
+        font-size: 16px
+        color: $color-background
+  .fade-enter-active, .fade-leave-active
+    transition: all 0.5s
+  .fade-enter, .fade-leave-to
+    opacity: 0
 </style>
