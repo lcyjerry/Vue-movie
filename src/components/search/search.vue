@@ -48,6 +48,7 @@ export default {
   methods: {
     clear() {
       this.query = "";
+      this.show = false;
     },
 
     search(val) {
